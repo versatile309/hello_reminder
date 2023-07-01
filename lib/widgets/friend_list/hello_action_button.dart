@@ -12,14 +12,14 @@ class HelloActionButton extends StatelessWidget {
     required this.helloAction,
   }) : super(key: key);
 
-  IconData get _getIcon {
+  Widget get _getIcon {
     switch (helloAction) {
       case HelloAction.call:
-        return Icons.call;
+        return const Icon(Icons.call);
       case HelloAction.message:
-        return Icons.message;
+        return const Icon(Icons.message);
       case HelloAction.katalk:
-        return Icons.messenger;
+        return const ImageIcon(AssetImage(AppIcon.kakao));
     }
   }
 
@@ -30,7 +30,7 @@ class HelloActionButton extends StatelessWidget {
         padding: EdgeInsets.all(AppStyle.space2),
         child: IconButton(
           onPressed: () {},
-          icon: Icon(_getIcon),
+          icon: _getIcon,
         ),
       ),
     );

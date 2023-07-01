@@ -4,6 +4,7 @@ import 'package:hello_reminder/data/friend.dart';
 import 'package:hello_reminder/data/hello_log.dart';
 import 'package:hello_reminder/style/app_style.dart';
 import 'package:hello_reminder/widgets/friend_list/hello_action_button.dart';
+import 'package:intl/intl.dart';
 
 class FriendListItem extends StatelessWidget {
   final Friend friend;
@@ -14,6 +15,9 @@ class FriendListItem extends StatelessWidget {
     required this.friend,
     required this.lastHelloLog,
   }) : super(key: key);
+  
+  get _formattedTime => DateFormat('yyyy-MM-dd').format(
+      DateTime.fromMillisecondsSinceEpoch(lastHelloLog.timdstamp * 1000));
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class FriendListItem extends StatelessWidget {
               ],
             ),
             Text(
-                '마지막으로 ${lastHelloLog.timdstamp}에 ${lastHelloLog.helloAction.displayName}(으)로 연락')
+                '마지막으로 $_formattedTime에 ${lastHelloLog.helloAction.displayName}(으)로 연락')
           ],
         ),
       ),

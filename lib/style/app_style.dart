@@ -8,3 +8,8 @@ class AppStyle {
   static double space7 = 64;
 
 }
+
+class AppIcon {
+  static const _basePath = 'assets/images/icons';
+  static const kakao = '$_basePath/kakao.png';
+}

@@ -8,7 +8,7 @@ part of 'hello_log.dart';
 
 _$_HelloLog _$$_HelloLogFromJson(Map<String, dynamic> json) => _$_HelloLog(
       id: json['id'] as String,
-      timdstamp: json['timdstamp'] as String,
+      timdstamp: json['timdstamp'] as int,
       helloAction: $enumDecode(_$HelloActionEnumMap, json['helloAction']),
     );
 

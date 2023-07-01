@@ -7,7 +7,7 @@ part 'hello_log.g.dart';
 class HelloLog with _$HelloLog {
   const factory HelloLog({
     required String id,
-    required String timdstamp,
+    required int timdstamp,
     required HelloAction helloAction,
   }) = _HelloLog;
 
