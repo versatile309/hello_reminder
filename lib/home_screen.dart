@@ -39,8 +39,16 @@ class HomeScreen extends StatelessWidget {
                   HelloLog(
                     id: '1',
                     timdstamp: 1688190817,
-                    helloAction: HelloAction.call,
+                    helloAction: HelloAction.katalk,
                   )
+                ),
+                (
+                  Friend(
+                    id: '1',
+                    firstName: '김',
+                    lastName: '유리',
+                  ),
+                  null
                 ),
               ]),
             ),

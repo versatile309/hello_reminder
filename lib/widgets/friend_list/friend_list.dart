@@ -4,7 +4,7 @@ import 'package:hello_reminder/data/hello_log.dart';
 import 'package:hello_reminder/widgets/friend_list/friend_list_item.dart';
 
 class FriendList extends StatelessWidget {
-  final List<(Friend, HelloLog)> friends;
+  final List<(Friend, HelloLog?)> friends;
 
   const FriendList({
     Key? key,
