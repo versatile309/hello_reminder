@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:hello_reminder/data/friend.dart';
-import 'package:hello_reminder/data/hello_log.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hello_reminder/widgets/friend_list/cubit/friend_list_cubit.dart';
 import 'package:hello_reminder/widgets/friend_list/friend_list_item.dart';
 
 class FriendList extends StatelessWidget {
-  final List<(Friend, HelloLog?)> friends;
 
   const FriendList({
     Key? key,
-    required this.friends,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) => FriendListItem(
-        friend: friends[index].$1,
-        lastHelloLog: friends[index].$2,
-      ),
-      itemCount: friends.length,
+    return BlocBuilder<FriendListCubit, FriendListState>(
+      builder: (context, state) {
+        return ListView.builder(
+          itemBuilder: (context, index) => FriendListItem(
+            friend: state.list[index].$1,
+            lastHelloLog: state.list[index].$2,
+          ),
+          itemCount: state.list.length,
+        );
+      },
     );
   }
 }
