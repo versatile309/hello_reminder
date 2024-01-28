@@ -18,7 +18,7 @@ class FriendListItem extends StatelessWidget {
 
   get _formattedTime => lastHelloLog != null
       ? DateFormat('yyyy-MM-dd H:mm:s').format(
-          DateTime.fromMillisecondsSinceEpoch(lastHelloLog!.timdstamp,
+          DateTime.fromMillisecondsSinceEpoch(lastHelloLog!.timestamp,
               isUtc: true))
       : '';
 
@@ -34,7 +34,7 @@ class FriendListItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${friend.firstName} ${friend.lastName}'),
+                Text(friend.name),
                 Row(
                   children: [
                     // HelloActionButton(

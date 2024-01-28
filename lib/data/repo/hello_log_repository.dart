@@ -1,31 +1,52 @@
-import 'dart:convert';
-
-import 'package:hello_reminder/data/friend.dart';
+import 'package:hello_reminder/data/enums/db_table_name.dart';
+import 'package:hello_reminder/data/enums/hello_action.dart';
 import 'package:hello_reminder/data/hello_log.dart';
-import 'package:hello_reminder/data/source/local_storage_service.dart';
+import 'package:sqflite/sqflite.dart';
 
 class HelloLogRepository {
-  final LocalStorageService localStorageService;
+  final Database localDatabase;
+  late String tableName;
 
-  HelloLogRepository({required this.localStorageService});
-
-  Future<List<(Friend, HelloLog?)>> get() async {
-    final lawResult = await localStorageService.getByKey('logs');
-
-    if (lawResult == null) return [];
-
-    final jsonResult = json.decode(lawResult);
-
-    return (jsonResult as List<dynamic>).map<(Friend, HelloLog)>((e) {
-      return (Friend.fromJson(e['friend']), HelloLog.fromJson(e['log']));
-    }).toList();
+  HelloLogRepository({required this.localDatabase}) {
+    tableName = DbTableName.hellolog.name;
   }
 
-  Future<void> set(List<(Friend, HelloLog?)> logs) async {
-    await localStorageService.setByKey(
-        'logs',
-        json.encode(logs
-            .map((e) => {'friend': e.$1.toJson(), 'log': e.$2?.toJson()})
-            .toList()));
+  Future<List<HelloLog>> getAllHelloLogs() async {
+    final List<Map<String, dynamic>> maps =
+        await localDatabase.query(tableName);
+    return List.generate(maps.length, (i) {
+      return HelloLog(
+        id: maps[i]['id'],
+        friendId: maps[i]['friendId'],
+        timestamp: maps[i]['timestamp'],
+        action: HelloAction.values.firstWhere(
+            (e) => e.toString() == 'HelloAction.${maps[i]['action']}'),
+      );
+    });
+  }
+
+  Future<void> insertHelloLog(HelloLog helloLog) async {
+    await localDatabase.insert(
+      tableName,
+      helloLog.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> updateHelloLog(HelloLog helloLog) async {
+    await localDatabase.update(
+      tableName,
+      helloLog.toJson(),
+      where: 'id = ?',
+      whereArgs: [helloLog.id],
+    );
+  }
+
+  Future<void> deleteHelloLog(String id) async {
+    await localDatabase.delete(
+      tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }

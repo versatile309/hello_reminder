@@ -6,9 +6,10 @@ part 'hello_log.g.dart';
 @freezed
 class HelloLog with _$HelloLog {
   const factory HelloLog({
-    required String id,
-    required int timdstamp,
-    required HelloAction helloAction,
+    required int id,
+    required int friendId,
+    required int timestamp,
+    required HelloAction action,
   }) = _HelloLog;
 
   factory HelloLog.fromJson(Map<String, Object?> json)

@@ -5,10 +5,9 @@ part 'friend.g.dart';
 @freezed
 class Friend with _$Friend {
   const factory Friend({
-    required String id,
-    required String firstName,
-    required String lastName,
-    @Default('') String phoneNumber,
+    required int id,
+    required String name,
+    @Default('') String phone,
   }) = _Friend;
 
   factory Friend.fromJson(Map<String, Object?> json)

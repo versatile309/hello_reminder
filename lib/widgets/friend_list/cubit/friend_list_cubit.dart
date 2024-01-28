@@ -1,20 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hello_reminder/data/enums/hello_action.dart';
 import 'package:hello_reminder/data/friend.dart';
 import 'package:hello_reminder/data/hello_log.dart';
+import 'package:hello_reminder/data/repo/friend_repository.dart';
 import 'package:hello_reminder/data/repo/hello_log_repository.dart';
 
 part 'friend_list_state.dart';
 
 class FriendListCubit extends Cubit<FriendListState> {
   final HelloLogRepository helloLogRepository;
-  FriendListCubit({required this.helloLogRepository})
-      : super(FriendListState.initial());
+  final FriendRepository friendRepository;
+  FriendListCubit({
+    required this.helloLogRepository,
+    required this.friendRepository,
+  }) : super(FriendListState.initial());
 
   Future<void> fetch() async {
+    emit(FriendListState.initial());
     try {
-      final result = await helloLogRepository.get();
+      final result = await friendRepository.getAllFirendsWithLastHelloLog();
 
       emit(state.copyWith(list: result));
     } catch (e) {
@@ -22,7 +26,7 @@ class FriendListCubit extends Cubit<FriendListState> {
     }
   }
 
-  Future<void> updateDate({required String friendId}) async {
+  Future<void> updateDate({required int friendId}) async {
     final tempList = List.of(state.list);
 
     final item =
@@ -30,16 +34,12 @@ class FriendListCubit extends Cubit<FriendListState> {
 
     if (item != null) {
       final index = tempList.indexOf(item);
-      final newLog = item.$2 == null
-          ? HelloLog(
-              id: '1',
-              timdstamp: DateTime.now().millisecondsSinceEpoch,
-              helloAction: HelloAction.call)
-          : item.$2?.copyWith(timdstamp: DateTime.now().millisecondsSinceEpoch);
+      final newLog =
+          item.$2?.copyWith(timestamp: DateTime.now().millisecondsSinceEpoch);
 
       tempList[index] = (item.$1, newLog);
 
-      await helloLogRepository.set(tempList);
+      await helloLogRepository.updateHelloLog(newLog!);
 
       emit(state.copyWith(list: tempList));
     }

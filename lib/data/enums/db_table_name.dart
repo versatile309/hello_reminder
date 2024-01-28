@@ -1,0 +1,4 @@
+enum DbTableName {
+  friend,
+  hellolog,
+}
